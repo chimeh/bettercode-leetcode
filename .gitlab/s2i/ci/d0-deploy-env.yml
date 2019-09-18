@@ -1,0 +1,43 @@
+stages:
+  - deploy-env
+deploy-to-dev:
+  stage: deploy-env
+  script:
+     - export K8S_KUBECONFIG=${K8S_KUBECONFIG_DEV}
+     - s2i . deploy 
+  only:
+    - master
+    - /^rc.*$/
+    - /^bugfix.*$/
+    - /^hotfix.*$/
+    - /^feature.*$/ 
+  except:
+    - /^dev.*$/
+deploy-to-test:
+  stage: deploy-env
+  when: manual
+  script:
+     - export K8S_KUBECONFIG=${K8S_KUBECONFIG_TEST}
+     - s2i . deploy 
+  only:
+    - master
+    - /^rc.*$/
+    - /^bugfix.*$/
+    - /^hotfix.*$/
+    - /^feature.*$/ 
+  except:
+    - /^dev.*$/
+deploy-to-prod:
+  stage: deploy-env
+  when: manual
+  script:
+     - export K8S_KUBECONFIG=${K8S_KUBECONFIG_PROD}
+     - s2i . deploy 
+  only:
+    - master
+    - /^rc.*$/
+    - /^bugfix.*$/
+    - /^hotfix.*$/
+    - /^feature.*$/ 
+  except:
+    - /^dev.*$/
