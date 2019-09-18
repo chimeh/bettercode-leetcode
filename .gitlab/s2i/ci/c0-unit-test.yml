@@ -1,9 +1,9 @@
 stages:
-  - docker-build
-docker-build:
-  stage: docker-build
+  - unit-test
+unit-test:
+  stage: unit-test
   script:
-     - s2i . docker-build
+     - echo "TODO"
   only:
     - master
     - /^rc.*$/
