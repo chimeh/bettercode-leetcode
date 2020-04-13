@@ -11,7 +11,6 @@ code-check:
   stage: code-check
   script:
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
-    - cd ${CI_PROJECT_DIR}/${subdir}
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
@@ -68,6 +67,8 @@ artifact-docker-build-master:
     - s2i . artifact #${subdir}
     - s2i . docker #${subdir}
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -105,6 +106,8 @@ deploy-to-dev:
     - export INGRESS_CLASS_PUBLIC=${DEV_INGRESS_CLASS_PUBLIC}
     - s2i . deploy
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -137,6 +140,8 @@ deploy-to-test:
     - export INGRESS_CLASS_PUBLIC=${TEST_INGRESS_CLASS_PUBLIC}
     - s2i . deploy
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -172,6 +177,8 @@ rollback-test-from-uat:
     - export INGRESS_CLASS_PUBLIC=${TEST_INGRESS_CLASS_PUBLIC}
     - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -205,6 +212,8 @@ deploy-to-uat:
     - export INGRESS_CLASS_PUBLIC=${UAT_INGRESS_CLASS_PUBLIC}
     - s2i . deploy
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -240,6 +249,8 @@ rollback-uat-from-prd:
     - export INGRESS_CLASS_INTERNAL=${UAT_INGRESS_CLASS_INTERNAL}
     - export INGRESS_CLASS_PUBLIC=${UAT_INGRESS_CLASS_PUBLIC}
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -275,6 +286,8 @@ mirror-to-prd:
     - export INGRESS_CLASS_PUBLIC=${PRD_INGRESS_CLASS_PUBLIC}
     - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
@@ -326,6 +339,8 @@ artifact-release:
     - cp -f $(which s2ectl) /usr/local/bin/
     - perl -ni -e "s@${DOCKER_REPO}.+@${IMG}@g;print" runner/docker-compose.yaml
     - echo "##${subdir}"
+    - else
+    - echo "本次提交${subdir}无变更"
     - fi
     - done
   after_script:
