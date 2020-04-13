@@ -86,6 +86,7 @@
                         <compilerArguments>
                             <extdirs>${project.parent.basedir}/lib/</extdirs>
                             <extdirs>${PROJECT_DIR}/lib/</extdirs>
+                            <extdirs>${CI_PROJECT_PATH}/lib/</extdirs>
                         </compilerArguments>
                     </configuration>
                 </plugin>
