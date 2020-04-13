@@ -10,13 +10,13 @@ stages:
 code-check:
   stage: code-check
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - gitlab-ci-check
     - echo "##${subdir}"
     - fi
@@ -29,13 +29,13 @@ code-check:
 artifact-docker-build:
   stage: artifact-docker-build
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - git-merge-master
     - s2i . artifact #${subdir}
     - s2i . docker #${subdir}
@@ -57,13 +57,13 @@ artifact-docker-build:
 artifact-docker-build-master:
   stage: artifact-docker-build
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - s2i . artifact #${subdir}
     - s2i . docker #${subdir}
     - echo "##${subdir}"
@@ -86,13 +86,13 @@ artifact-docker-build-master:
 deploy-to-dev:
   stage: deploy-env
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export K8S_KUBECONFIG=${DEV_K8S_KUBECONFIG}
@@ -120,13 +120,13 @@ deploy-to-test:
   stage: deploy-env
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export K8S_KUBECONFIG=${TEST_K8S_KUBECONFIG}
@@ -154,13 +154,13 @@ rollback-test-from-uat:
   stage: deploy-env
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export SRC_K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
@@ -192,13 +192,13 @@ deploy-to-uat:
   stage: deploy-env
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
@@ -226,6 +226,7 @@ rollback-uat-from-prd:
   stage: deploy-env
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
@@ -233,7 +234,6 @@ rollback-uat-from-prd:
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export SRC_K8S_KUBECONFIG=${PRD_K8S_KUBECONFIG}
@@ -263,13 +263,13 @@ mirror-to-prd:
   stage: deploy-env
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export S2E_ORG
     - export S2E_NS
     - export SRC_K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
@@ -327,13 +327,13 @@ artifact-release:
   stage: artifact-release
   when: manual
   script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
     - for subdir in $(ls -d */);do
     - cd ${CI_PROJECT_DIR}/${subdir}
     - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
     - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
     - echo "##${subdir}"
-    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
     - export IMG="$(head -n 1 .s2i/s2i.*img.txt)"
     - echo ${IMG}
     - cp -f $(which s2ectl) /usr/local/bin/
