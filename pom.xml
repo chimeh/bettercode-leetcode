@@ -85,8 +85,8 @@
                         <encoding>UTF-8</encoding>
                         <compilerArguments>
                             <extdirs>${project.parent.basedir}/lib/</extdirs>
-                            <extdirs>${PROJECT_DIR}/lib/</extdirs>
-                            <extdirs>${CI_PROJECT_PATH}/lib/</extdirs>
+                            <extdirs>${CI_PROJECT_DIR}/lib/</extdirs>
+                            <extdirs>${PWD}/lib/</extdirs>
                         </compilerArguments>
                     </configuration>
                 </plugin>
