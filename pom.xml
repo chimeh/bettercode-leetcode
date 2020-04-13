@@ -4,14 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ne</groupId>
-    <artifactId>aaa</artifactId>
+    <groupId>com.bld</groupId>
+    <artifactId>cicd-java-multi</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>a</module>
-        <module>b</module>
-        <module>c</module>
+<!--        <module>a</module>-->
+<!--        <module>b</module>-->
+<!--        <module>c</module>-->
+        <module>crc16</module>
+<!--        <module>strings</module>-->
+<!--        <module>io</module>-->
+<!--        <module>lang</module>-->
+<!--        <module>misc</module>-->
+<!--        <module>structure</module>-->
+<!--        <module>oo</module>-->
+        <module>domain</module>
+        <module>dbm</module>
+        <module>database</module>
+<!--        <module>reflection</module>-->
+<!--        <module>threads</module>-->
+<!--        <module>network</module>-->
+<!--        <module>classloader</module>-->
+<!--        <module>starting</module>-->
+<!--        <module>datetime</module>-->
+<!--        <module>json</module>-->
+<!--        <module>regex</module>-->
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +83,10 @@
                     <version>3.8.0</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
+                        <compilerArguments>
+                            <extdirs>${project.parent.basedir}/lib/</extdirs>
+                            <extdirs>${PROJECT_DIR}/lib/</extdirs>
+                        </compilerArguments>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -101,6 +123,82 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <excludes>
+                        <!-- javafx not included in some Apple JDK versions?
+                            Access restriction: The type 'Stage' is not API (restriction on required library
+                            '/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/jfxrt.jar')
+                        -->
+                        <exclude>com/bld/javafx/*.java</exclude>
+
+                        <!-- Jumping the gun a bit, Mac JDK says "is not api", as above. -->
+                        <exclude>com/bld/unsafe/*.java</exclude>
+
+                        <!-- Having issue with Hamcrest on Eclipse vs on Maven, don't compile the
+                         *** testing demos for now (does not affect all the stuff in src/test/java!).
+                         -->
+                        <exclude>com/bld/testing/Ham*.java</exclude>
+
+                        <!-- Won't compile with UTF-8! -->
+                        <exclude>com/bld/lang/EuroLanguage.java</exclude>
+
+                        <!-- Defunct APIs -->
+                        <exclude>com/bld/datetimeold/IBMCalDemo.java</exclude>
+                        <exclude>com/bld/graphics/QTMoviePlayer.java</exclude>
+
+                        <!-- Used private API which is no longer available -->
+                        <exclude>com/bld/netweb/WebServerSimpleSE.java</exclude>
+
+                        <exclude>com/bld/plotter/Penman.java</exclude>
+
+                        <!-- Have yet to find a POM that works -->
+                        <exclude>com/bld/gui_swt/*.java</exclude>
+                        <exclude>com/bld/gui/ArrayListTableSimple.java</exclude>
+                        <exclude>com/bld/xml/XSLTransform.java</exclude>
+                        <exclude>com/bld/otherlang/StringDistance.java</exclude>
+                        <exclude>com/bld/javacomm/*.java</exclude>
+
+                        <!-- Unknown issues -->
+                        <exclude>com/bld/lang/UsePackage.java</exclude>
+                        <exclude>com/bld/rmi/callback/ClientProgram.java</exclude>
+
+                        <!-- Remainder all have 'Expect compile error' -->
+                        <!-- XXX replace this list with filter grep -->
+                        <exclude>com/bld/jdb/Problem.java</exclude>
+                        <exclude>com/bld/lang/AddException.java</exclude>
+                        <exclude>com/bld/lang/ByteAdd2.java</exclude>
+                        <exclude>com/bld/lang/CastingDemo.java</exclude>
+                        <exclude>com/bld/lang/ChangeArrayLength.java</exclude>
+                        <exclude>com/bld/lang/CommentBug.java</exclude>
+                        <exclude>com/bld/lang/CompileError.java</exclude>
+                        <exclude>com/bld/lang/ConsRecurs.java</exclude>
+                        <exclude>com/bld/lang/Constructors.java</exclude>
+                        <exclude>com/bld/lang/ImportConflict.java</exclude>
+                        <exclude>com/bld/lang/ImportNonPublic.java</exclude>
+                        <exclude>com/bld/lang/InitializersDemo.java</exclude>
+                        <exclude>com/bld/lang/InnerMethods.java</exclude>
+                        <exclude>com/bld/lang/InterfaceNoConstructor.java</exclude>
+                        <exclude>com/bld/lang/NoLocalStatics.java</exclude>
+                        <exclude>com/bld/lang/NullStaticMethod.java</exclude>
+                        <exclude>com/bld/lang/OverLoadReturn.java</exclude>
+                        <exclude>com/bld/lang/AnnotationOverrideDemo.java</exclude>
+                        <exclude>com/bld/lang/PrivProt.java</exclude>
+                        <exclude>com/bld/lang/ProtectedClass.java</exclude>
+                        <exclude>com/bld/lang/ReturnType.java</exclude>
+                        <exclude>com/bld/lang/ShowInitializers.java</exclude>
+                        <exclude>com/bld/lang/Switch.java</exclude>
+                        <exclude>com/bld/lang/TryStealingInnerClass.java</exclude>
+                        <exclude>com/bld/netweb/JScript.java</exclude>
+                        <exclude>com/bld/numbers/CastNeeded.java</exclude>
+                        <exclude>com/bld/numbers/SmallIntMult.java</exclude>
+                        <exclude>com/bld/oo/AllClasses.java</exclude>
+                        <exclude>com/bld/oo/Clone0.java</exclude>
+                        <exclude>com/bld/oo/SingletonCheat1.java</exclude>
+                        <exclude>com/bld/oo/SingletonCheat2.java</exclude>
+                        <exclude>com/bld/reflection/ClassLoaderDemo0.java</exclude>
+                        <exclude>com/bld/strings/WolfInStringsClothing.java</exclude>
+                        <exclude>com/bld/threads/StopStop.java</exclude>
+                        <exclude>com/bld/threads/ThreadDeathCatch.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
