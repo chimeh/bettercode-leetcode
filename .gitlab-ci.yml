@@ -1,0 +1,341 @@
+#s2i:2
+
+stages:
+  - code-check
+  - artifact-docker-build
+  - deploy-env
+  - artifact-release
+  - src-release
+#####
+code-check:
+  stage: code-check
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - gitlab-ci-check
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - echo "done"
+  except:
+    - tags
+#####
+artifact-docker-build:
+  stage: artifact-docker-build
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - git-merge-master
+    - s2i . artifact #${subdir}
+    - s2i . docker #${subdir}
+    - artifact-docker-build-post
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - artifact-docker-build-post
+
+  except:
+    - tags
+    - master
+  artifacts:
+    when: on_success
+    expire_in: 24h
+    paths:
+      - .s2i/
+artifact-docker-build-master:
+  stage: artifact-docker-build
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - s2i . artifact #${subdir}
+    - s2i . docker #${subdir}
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - artifact-docker-build-post
+  only:
+    - master
+    - hotfix/*
+  artifacts:
+    when: on_success
+    name: ${CI_PROJECT_NAME}-${CI_JOB_STAGE}
+    expire_in: 24h
+    paths:
+      - .s2i/
+#####
+deploy-to-dev:
+  stage: deploy-env
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export K8S_KUBECONFIG=${DEV_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${DEV_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${DEV_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${DEV_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${DEV_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${DEV_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${DEV_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${DEV_INGRESS_CLASS_PUBLIC}
+    - s2i . deploy
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - deploy-dev-post
+  except:
+    - tags
+    - master
+  dependencies: []
+deploy-to-test:
+  stage: deploy-env
+  when: manual
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export K8S_KUBECONFIG=${TEST_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${TEST_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${TEST_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${TEST_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${TEST_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${TEST_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${TEST_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${TEST_INGRESS_CLASS_PUBLIC}
+    - s2i . deploy
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - deploy-test-post
+  except:
+    - tags
+    - master
+  dependencies: []
+rollback-test-from-uat:
+  stage: deploy-env
+  when: manual
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export SRC_K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
+    - export SRC_K8S_NS
+    - export SRC_K8S_NS_SUFFIX=${UAT_K8S_NS_SUFFIX}
+    - export K8S_KUBECONFIG=${TEST_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${TEST_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${TEST_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${TEST_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${TEST_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${TEST_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${TEST_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${TEST_INGRESS_CLASS_PUBLIC}
+    - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - rollback-test-post
+  except:
+    - tags
+    - master
+    - /^hotfix.*$/
+  dependencies: []
+deploy-to-uat:
+  stage: deploy-env
+  when: manual
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${UAT_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${UAT_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${UAT_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${UAT_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${UAT_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${UAT_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${UAT_INGRESS_CLASS_PUBLIC}
+    - s2i . deploy
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - deploy-uat-post
+  only:
+    - master
+    - /^hotfix.*$/
+  dependencies: []
+rollback-uat-from-prd:
+  stage: deploy-env
+  when: manual
+  script:
+    - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export SRC_K8S_KUBECONFIG=${PRD_K8S_KUBECONFIG}
+    - export SRC_K8S_NS
+    - export SRC_K8S_NS_SUFFIX=${PRD_K8S_NS_SUFFIX}
+    - export K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${UAT_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${UAT_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${UAT_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${UAT_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${UAT_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${UAT_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${UAT_INGRESS_CLASS_PUBLIC}
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - rollback-uat-post
+  only:
+    - master
+    - /^hotfix.*$/
+  dependencies: []
+mirror-to-prd:
+  stage: deploy-env
+  when: manual
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export S2E_ORG
+    - export S2E_NS
+    - export SRC_K8S_KUBECONFIG=${UAT_K8S_KUBECONFIG}
+    - export SRC_K8S_NS
+    - export SRC_K8S_NS_SUFFIX=${UAT_K8S_NS_SUFFIX}
+    - export K8S_KUBECONFIG=${PRD_K8S_KUBECONFIG}
+    - export K8S_NS_SUFFIX=${PRD_K8S_NS_SUFFIX}
+    - export K8S_NS
+    - export K8S_DOMAIN_INTERNAL=${PRD_K8S_DOMAIN_INTERNAL}
+    - export K8S_DOMAIN_PUBLIC=${PRD_K8S_DOMAIN_PUBLIC}
+    - export INGRESS_INTERNAL_ENABLED=${PRD_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_PUBLIC_ENABLED=${PRD_INGRESS_INTERNAL_ENABLED}
+    - export INGRESS_CLASS_INTERNAL=${PRD_INGRESS_CLASS_INTERNAL}
+    - export INGRESS_CLASS_PUBLIC=${PRD_INGRESS_CLASS_PUBLIC}
+    - k8s-app-mirror ${SRC_K8S_KUBECONFIG} ${K8S_KUBECONFIG}
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - deploy-prd-post
+  only:
+    - master
+  dependencies: []
+#####
+src-mr-create:
+  stage: src-release
+  when: manual
+  script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - gitlab-mr-create
+  after_script:
+    - echo "done"
+  except:
+    - master
+    - /^hotfix.*$/
+    - tags
+  dependencies: []
+gitlab-auto-merge:
+  stage: src-release
+  script:
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - gitlab-auto-merge
+  after_script:
+    - echo "done"
+  only:
+    - /^hotfix.*$/
+  except:
+    - tags
+  dependencies: []
+#####
+
+artifact-release:
+  stage: artifact-release
+  when: manual
+  script:
+    - TOPDIR_COMMIT_SHA=$(git rev-parse  HEAD)
+    - for subdir in $(ls -d */);do
+    - cd ${CI_PROJECT_DIR}/${subdir}
+    - SUBDIR_COMMIT_SHA=$(git log -n 1 --format="%H" .)
+    - if [[ "${SUBDIR_COMMIT_SHA}" == "${TOPDIR_COMMIT_SHA}" ]];then
+    - echo "##${subdir}"
+    - set -o allexport;s2ectl exec du -d 1; touch s2ectl.env;source  s2ectl.env;set +o allexport
+    - export IMG="$(head -n 1 .s2i/s2i.*img.txt)"
+    - echo ${IMG}
+    - cp -f $(which s2ectl) /usr/local/bin/
+    - perl -ni -e "s@${DOCKER_REPO}.+@${IMG}@g;print" runner/docker-compose.yaml
+    - echo "##${subdir}"
+    - fi
+    - done
+  after_script:
+    - echo "done"
+  except:
+    - tags
+    - master
+  artifacts:
+    when: on_success
+    name: ${CI_PROJECT_NAME}-${CI_JOB_STAGE}
+    expire_in: 24h
+    paths:
+      - runner/
