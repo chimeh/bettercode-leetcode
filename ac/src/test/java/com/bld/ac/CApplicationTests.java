@@ -1,4 +1,4 @@
-package com.bld.c;
+package com.bld.ac;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.bld.b;
+package com.bld.ab;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
