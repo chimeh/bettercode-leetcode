@@ -12,6 +12,28 @@
     <packaging>jar</packaging>
     <name>structure</name>
     <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.darwinsys</groupId>
+            <artifactId>darwinsys-api</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bld</groupId>
+            <artifactId>misc</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+    </dependencies>
 </project>
 
 

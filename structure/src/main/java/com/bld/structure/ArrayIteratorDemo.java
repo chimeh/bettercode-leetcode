@@ -1,5 +1,5 @@
 // BEGIN main
-package structure;
+package com.bld.structure;
 
 import com.darwinsys.util.ArrayIterator;
 

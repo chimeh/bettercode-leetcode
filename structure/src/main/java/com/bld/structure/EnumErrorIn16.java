@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /**
  * Demonstrate an Enum with Enum fields AND show an

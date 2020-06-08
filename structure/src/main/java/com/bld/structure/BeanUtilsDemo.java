@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
@@ -9,7 +9,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import misc.MyDate;
+import com.bld.misc.MyDate;
 
 public class BeanUtilsDemo {
 
@@ -22,8 +22,9 @@ public class BeanUtilsDemo {
 	public static void main(String[] args) throws Exception {
 		
 		Calendar c = Calendar.getInstance();
-		Map<String,Object> m = BeanUtils.describe(c);
-		printMap(m);
+		Map<String, String> m = BeanUtils.describe(c);
+		Map<String, Object> mo = new java.util.HashMap<String, Object>(m);
+		printMap(mo);
 				
 		System.out.println("----------------------------------");
 		

@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** Simple array example
  * @author Ian Darwin

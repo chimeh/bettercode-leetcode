@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

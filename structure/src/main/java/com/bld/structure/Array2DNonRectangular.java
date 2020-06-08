@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /**
  * Creates and prints a non-rectangular 2D array

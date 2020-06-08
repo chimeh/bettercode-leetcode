@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.util.ArrayList;
 import java.util.Date;

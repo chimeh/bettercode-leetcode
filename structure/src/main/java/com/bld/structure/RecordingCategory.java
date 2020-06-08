@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** This represents a choice of category
  */

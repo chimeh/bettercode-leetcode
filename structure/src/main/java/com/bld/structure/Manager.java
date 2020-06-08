@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 public class Manager extends Employee {
 	// name and personellNumber are inherited from Employee

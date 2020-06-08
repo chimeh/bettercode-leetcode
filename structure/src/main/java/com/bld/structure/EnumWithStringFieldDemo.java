@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /**
  * Demonstrate some enums with String fields

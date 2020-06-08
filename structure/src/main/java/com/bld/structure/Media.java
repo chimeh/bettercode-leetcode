@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** These are the product categories that we sell
  */

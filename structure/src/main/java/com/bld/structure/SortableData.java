@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /**
  * A toy data class for demonstrating sorting with multiple fields

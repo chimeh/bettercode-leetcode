@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 // This is the Two-Dimensional Array Example from around 471-5-15.
 public class TwoDArrays {

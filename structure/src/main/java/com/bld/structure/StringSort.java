@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 
 /* The contents of this file is borrowed from:

@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** Try to collect all the Array Chapter examples from 471 into one file
  * @author Ian Darwin

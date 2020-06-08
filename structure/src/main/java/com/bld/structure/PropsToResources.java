@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -15,7 +15,7 @@ public class PropsToResources {
 		Properties props = new Properties();
 
 		// Get some data
-		props.load(new FileInputStream("structure/PropsDemo.dat"));
+		props.load(new FileInputStream("com/bld/structure/PropsDemo.dat"));
 
 		// Write properties
 		System.out.println("Starting to write");

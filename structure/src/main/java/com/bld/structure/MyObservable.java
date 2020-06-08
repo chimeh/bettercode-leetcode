@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.io.Serializable;
 import java.util.ArrayList;

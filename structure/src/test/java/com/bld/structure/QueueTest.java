@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import junit.framework.TestCase;
 

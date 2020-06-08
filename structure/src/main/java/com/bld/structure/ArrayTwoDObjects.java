@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** Show Two-Dimensional Array of Objects */
 // BEGIN main

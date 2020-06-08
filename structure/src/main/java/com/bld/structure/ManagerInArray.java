@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /**
  * This is a toy program that shows creating a Manager object.

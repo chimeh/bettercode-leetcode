@@ -1,4 +1,4 @@
-package misc;
+package com.bld.misc;
 
 public class MyDate {
 	public Integer year, month, day;

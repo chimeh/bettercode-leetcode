@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** Simple demo to print all the types of an enum. */
 // BEGIN main

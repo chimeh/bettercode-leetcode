@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 public enum RecordingCategoryBetter {
 	JAZZ("Jazz"),

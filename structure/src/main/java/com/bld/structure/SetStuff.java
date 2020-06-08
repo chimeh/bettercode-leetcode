@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.util.Collection;
 import java.util.HashSet;

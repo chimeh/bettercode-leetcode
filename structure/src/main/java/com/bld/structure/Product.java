@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 // BEGIN main
 public class Product {

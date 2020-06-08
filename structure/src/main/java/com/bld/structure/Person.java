@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 /** A sample class used in some of the notes accompanying this code set.
  * N.B. This is NOT "best practices": should all be private fields,

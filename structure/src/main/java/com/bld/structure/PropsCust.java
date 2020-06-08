@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 import java.io.IOException;
 import java.util.Properties;

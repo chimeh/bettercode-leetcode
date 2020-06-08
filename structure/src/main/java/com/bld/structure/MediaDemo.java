@@ -1,4 +1,4 @@
-package structure;
+package com.bld.structure;
 
 public class MediaDemo {
 	public static void main(String[] args) {
