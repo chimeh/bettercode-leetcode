@@ -26,7 +26,7 @@
         <module>skyeye</module>
         <module>structure</module>
 <!--        <module>reflection</module>-->
-<!--        <module>threads</module>-->
+        <module>threads</module>
 <!--        <module>network</module>-->
 <!--        <module>classloader</module>-->
 <!--        <module>starting</module>-->

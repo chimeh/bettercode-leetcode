@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 /**
  * Represents one thing that can be voted on, e.g., a candidate or a position

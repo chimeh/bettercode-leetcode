@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 

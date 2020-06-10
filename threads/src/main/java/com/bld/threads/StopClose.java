@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 import java.io.BufferedReader;
 import java.io.IOException;

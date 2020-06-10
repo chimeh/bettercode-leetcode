@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 // BEGIN main
 public class RunnableLambda {

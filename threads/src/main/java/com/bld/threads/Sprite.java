@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 import java.awt.Component;
 import java.awt.Graphics;

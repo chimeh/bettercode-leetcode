@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 /**
  * The fastest way to a Threading deadlock

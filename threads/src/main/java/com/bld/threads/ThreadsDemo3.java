@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 /** 
  * Threaded demo application, using inner class as Runnable.

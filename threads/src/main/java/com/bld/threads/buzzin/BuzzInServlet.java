@@ -1,4 +1,4 @@
-package threads.buzzin;
+package com.bld.threads.buzzin;
 
 /*
  * Copyright (c) Ian F. Darwin, http://www.darwinsys.com/, 1996-2002.

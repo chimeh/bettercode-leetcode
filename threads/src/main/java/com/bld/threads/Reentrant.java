@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 /** 
  * Illustrate the following quotation:<blockquote>

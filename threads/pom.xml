@@ -12,6 +12,18 @@
     <packaging>jar</packaging>
     <name>threads</name>
     <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.darwinsys</groupId>
+            <artifactId>darwinsys-api</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+    </dependencies>
 </project>
 
 

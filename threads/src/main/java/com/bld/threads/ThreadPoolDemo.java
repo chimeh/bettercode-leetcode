@@ -1,4 +1,4 @@
-package threads;
+package com.bld.threads;
 
 import java.util.*;
 import java.util.concurrent.*;
