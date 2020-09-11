@@ -1,4 +1,4 @@
-package regex;
+package com.bld.regex;
 
 import java.io.*;
 import java.nio.*;

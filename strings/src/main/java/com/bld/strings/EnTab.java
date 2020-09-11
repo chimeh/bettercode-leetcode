@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-import com.darwinsys.util.Debug;
+//import com.darwinsys.util.Debug;
 
 /**
  * EnTab: replace blanks by tabs and blanks. Transmuted from K&R Software Tools
@@ -20,7 +20,11 @@ import com.darwinsys.util.Debug;
 public class EnTab {
 	/** The Tabs (tab logic handler) */
 	protected Tabs tabs;
-
+	private  static class Debug {
+		public static void println(String category, String msg) {
+			System.out.println(msg);
+		}
+	}
 	/**
 	 * Delegate tab spacing information to tabs.
 	 */

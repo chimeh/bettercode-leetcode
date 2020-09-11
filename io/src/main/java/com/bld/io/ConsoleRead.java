@@ -1,4 +1,4 @@
-package io;
+package com.bld.io;
 
 /**
  * Read a name from the user; Requires Java 6 or later; does not run under Eclipse.

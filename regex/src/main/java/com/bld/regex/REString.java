@@ -1,4 +1,4 @@
-package regex;
+package com.bld.regex;
 
 /**
  * Simple example of using RE functionality in String class.

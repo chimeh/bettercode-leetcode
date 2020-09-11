@@ -12,6 +12,13 @@
     <packaging>jar</packaging>
     <name>regex</name>
     <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.darwinsys</groupId>
+            <artifactId>darwinsys-api</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+    </dependencies>
 </project>
 
 

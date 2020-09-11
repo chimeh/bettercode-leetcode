@@ -4,6 +4,7 @@ package com.bld.strings;
  * If this class could be compiled, Java security would be a myth.
  */
 // BEGIN main
+	@Deprecated
 public class WolfInStringsClothing 
 	extends java.lang.String {//EXPECT COMPILE ERROR
 

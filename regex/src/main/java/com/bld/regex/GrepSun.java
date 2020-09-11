@@ -1,4 +1,4 @@
-package regex;
+package com.bld.regex;
 
 // Sun Microsystems Example Code @(#)Grep.java	1.1 01/05/10
 

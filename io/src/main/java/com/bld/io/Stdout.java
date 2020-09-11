@@ -1,4 +1,4 @@
-package io;
+package com.bld.io;
 
 /**
  * All the examples for the Standard output recipe.

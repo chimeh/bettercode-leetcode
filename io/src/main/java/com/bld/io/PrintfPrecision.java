@@ -1,4 +1,4 @@
-package io;
+package com.bld.io;
 public class PrintfPrecision {
 public static void main(String[] args) {
 double latitude = -79.2818182791791d;

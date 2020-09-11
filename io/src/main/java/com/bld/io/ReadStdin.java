@@ -1,4 +1,4 @@
-package io;
+package com.bld.io;
 
 /**
  * Read one byte from Standard Input - hardly useful on its own.

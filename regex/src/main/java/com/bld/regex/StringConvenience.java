@@ -1,4 +1,4 @@
-package regex;
+package com.bld.regex;
 
 /**
  * StringConvenience -- demonstrate java.lang.String convenience routine

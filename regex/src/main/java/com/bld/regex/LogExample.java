@@ -1,4 +1,4 @@
-package regex;
+package com.bld.regex;
 
 /**
  * Common fields for Apache Log demo.
