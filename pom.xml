@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.bld</groupId>
+    <artifactId>nongju</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>nongju</name>
+    <packaging>pom</packaging>
+    <description>信息社会的锄头，生产工具</description>
+
+    <modules>
+        <module>javacookbook</module>
+        <module>leetcode-java</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <scm>
+        <url>https://github.com/chimeh/leetcode-engineering</url>
+        <connection>scm:git:https://github.com/chimeh/leetcode-engineering.git</connection>
+        <developerConnection>scm:git:https://github.com/chimeh/leetcode-engineering.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/chimeh/leetcode-engineering/issues</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>Leetcode-engineering Developer List</name>
+            <post>dev@bld.com</post>
+            <subscribe>dev-subscribe@bld.com</subscribe>
+            <unsubscribe>dev-unsubscribe@bld.com</unsubscribe>
+        </mailingList>
+        <mailingList>
+            <name>Leetcode-engineering Commits</name>
+            <post>commits@bld.com</post>
+            <subscribe>commits-subscribe@bld.com</subscribe>
+            <unsubscribe>commits-unsubscribe@bld.com</unsubscribe>
+        </mailingList>
+    </mailingLists>
+
+    <profiles>
+        <profile>
+            <id>engineering</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>engineering</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>leetcode</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>leetcode-java</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>engineering</module>
+                <module>leetcode-java</module>
+            </modules>
+            <build>
+                <!--<finalName>app</finalName>-->
+                <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>exec-maven-plugin</artifactId>
+                            <version>1.6.0</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>git submodule update</id>
+                                <phase>initialize</phase>
+                                <inherited>false</inherited>
+                                <configuration>
+                                    <executable>git</executable>
+                                    <arguments>
+                                        <argument>submodule</argument>
+                                        <argument>update</argument>
+                                        <argument>--init</argument>
+                                        <argument>--recursive</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

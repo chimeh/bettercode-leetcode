@@ -3,7 +3,7 @@ package com.bld.threads;
 import java.util.Iterator;
 import java.util.List;
 
-import com.darwinsys.util.ArrayIterator;
+//import com.darwinsys.util.ArrayIterator;
 
 /**
  * BallotBox - keep track of voting. Only used in ReadersWritersDemo.

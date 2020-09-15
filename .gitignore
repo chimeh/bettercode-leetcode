@@ -1,4 +1,5 @@
 .javasrc/
+workspace
 *.gz
 *.zip
 *.iml
