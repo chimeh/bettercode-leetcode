@@ -28,7 +28,13 @@ jobs:
         uses: bldyun/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.OS }}-maven-cache
+          restore-keys: |
+            ${{ runner.OS }}-maven-cache
       - name: s2i
         run: |
           export DOCKER_REPO=${DOCKER_REPO:-registry-1.docker.io}
