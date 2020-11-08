@@ -35,7 +35,7 @@
 
 */
 
-package com.bld.leetcode.a0已解答待归类.面试题16_25_LRU缓存;
+package com.bld.leetcode.a0已解答待归类.qq_面试题16_25_LRU缓存;
 import java.util.*;
 
 public class LRUCache {
